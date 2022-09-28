@@ -1,0 +1,28 @@
+server:
+  port: 0
+
+spring:
+  cloud:
+    config:
+      uri:
+      - http://localhost:8888 
+      name: product_service      
+  application:
+    name: TEST-SERVICE   
+    
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+    instance-id: ${spring.application.name}:${random.uuid}    
+    
+       
+     
+    
+
+       
+          
