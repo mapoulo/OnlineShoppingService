@@ -1,0 +1,24 @@
+server:
+  port: 9191
+
+spring:
+  application:
+    name: ONLINESHOPPING-GATEWAY-SERVICE
+  cloud: 
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+      - id: product-service
+        uri:
+          lb://product-service
+        predicates:
+        - Path=/api/product/*
+        - Path=/api/product/getProductById/{productId}
+       
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}-${random.uuid}        

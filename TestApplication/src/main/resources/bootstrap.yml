@@ -1,26 +1,42 @@
+
 server:
   port: 0
 
+  
 spring:
+  profiles:
+    active:
+    - test_service
   cloud:
+    bus:
+      enabled: true
+      refresh:
+        enabled: true
     config:
-      uri:
-      - http://localhost:8888 
-      name: product_service      
+      uri: http://localhost:8888
+      failFast: true
+      name: test_service
+ 
+    
+  jpa:
+    hibernate:
+      ddl-auto: update        
   application:
-    name: TEST-SERVICE   
+    name: TEST-PRODUCT-SERVICE
+      
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest   
     
-eureka:
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-  instance:
-    hostname: localhost
-    instance-id: ${spring.application.name}:${random.uuid}    
-    
-       
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+        - '*'  
+               
      
     
 
