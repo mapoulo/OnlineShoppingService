@@ -1,5 +1,6 @@
 package com.example.demo.Services;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.example.demo.DTOs.InventoryResponse;
 import com.example.demo.DTOs.OrderLineItemsDto;
 import com.example.demo.DTOs.OrderRequest;
 import com.example.demo.Entities.Order;
@@ -36,9 +38,12 @@ public class OrderSevice {
 		List<OrderLineItems> orderList = orderRequest.getOrderLineItems().stream().map(orderItemDto -> mapDTOtoOrderLineItem(orderItemDto)).toList();
 		order.setOrderLineItemsLists(orderList);
 		
+		List<String> skuCodes = order.getOrderLineItemsLists().stream().map(OrderLineItems::getSkuCode).toList();
 		
-		boolean isInstock =  webClient.get().uri("").retrieve().bodyToMono(Boolean.class).block();
-		if(isInstock) {
+		InventoryResponse[] inventoryArrayList =  webClient.get().uri("", urlBuilder -> urlBuilder.build("skuCode", skuCodes)).retrieve().bodyToMono(InventoryResponse[].class).block();
+		
+	    boolean allProductsInStock = Arrays.stream(inventoryArrayList).allMatch(InventoryResponse::isInstock);
+		if(allProductsInStock) {
 			orderRepo.save(order);
 			log.info("saveOrder method in OrderService is executed");
 		}else {
