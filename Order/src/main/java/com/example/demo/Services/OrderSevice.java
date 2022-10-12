@@ -3,6 +3,8 @@ package com.example.demo.Services;
 import java.util.List;
 import java.util.UUID;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.example.demo.DTOs.OrderLineItemsDto;
@@ -17,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class OrderSevice {
 	
 	private  final OrderRepository orderRepo;
