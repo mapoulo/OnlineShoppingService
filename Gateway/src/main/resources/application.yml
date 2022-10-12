@@ -16,7 +16,6 @@ spring:
           lb://product-service
         predicates:
         - Path=/api/product/*
-        - Path=/api/product/getProductById/{productId}
        
 
 eureka:

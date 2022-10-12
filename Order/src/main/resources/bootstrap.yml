@@ -1,0 +1,57 @@
+server:
+  port: 0
+
+  
+spring:
+  profiles:
+    active:
+    - test_service
+  cloud:
+    bus:
+      enabled: true
+      refresh:
+        enabled: true
+    config:
+      uri: http://localhost:8888
+      failFast: true
+      name: test_service
+    vault:
+      host: localhost
+      port: 8200
+      authentication: TOKEN
+      scheme: http
+      token: hvs.BAGfgGzU8y1cGdVRDcxjD4T3
+      application-name:    shopOnline 
+  datasource:
+    url: jdbc:mysql://localhost:3306/MyOrder?createDatabaseIfNotExist=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+   
+    
+  jpa:
+    hibernate:
+      ddl-auto: update        
+  application:
+    name: ORDER-SERVICE
+      
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest   
+    
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+        - '*'  
+               
+               
+eureka:
+  instance:
+    instance-id: ${spring.application.name}-${random.uuid}   
+     
+    
+
+       
+          
