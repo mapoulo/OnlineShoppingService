@@ -29,7 +29,7 @@ public class OrderSevice {
 	private  final OrderRepository orderRepo;
 	
 	@Autowired
-	private WebClient webClient;
+	private WebClient.Builder webClientBuilder;
 	
 	public void saveOrder(OrderRequest orderRequest) {
 
@@ -42,7 +42,7 @@ public class OrderSevice {
 		List<String> skuCodes = order.getOrderLineItemsLists().stream().map(OrderLineItems::getSkuCode).toList();
 		
 //		InventoryResponse[] inventoryArrayList =  webClient.get().uri("http://localhost:53419/api/inventory?", urlBuilder -> urlBuilder.build("skuCode", values)).retrieve().bodyToMono(InventoryResponse[].class).block();
-		InventoryResponse[] inventoryArrayList =  webClient.get().uri("http://localhost:54504/api/inventory", urlBuilder -> urlBuilder.queryParam("skuCode", skuCodes).build()).retrieve().bodyToMono(InventoryResponse[].class).block();
+		InventoryResponse[] inventoryArrayList =  webClientBuilder.build().get().uri("http://inventory-service/api/inventory", urlBuilder -> urlBuilder.queryParam("skuCode", skuCodes).build()).retrieve().bodyToMono(InventoryResponse[].class).block();
 
 	    boolean allProductsInStock = Arrays.stream(inventoryArrayList).toList().size()>2;
 		if(allProductsInStock) {
