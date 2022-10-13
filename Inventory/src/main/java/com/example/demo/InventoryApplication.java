@@ -22,14 +22,9 @@ public class InventoryApplication {
 			
 			Inventory i1 = new Inventory();
 			i1.setSkuCode("Nokia");
-			i1.setQuantity(2);
-			
-			Inventory i2 = new Inventory();
-			i1.setSkuCode("iPhone");
-			i1.setQuantity(10);
-			
+			i1.setQuantity(20);
 			repo.save(i1);
-			repo.save(i2);
+
 		};
 	}
 

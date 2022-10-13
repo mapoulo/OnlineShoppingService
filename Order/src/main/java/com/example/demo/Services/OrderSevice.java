@@ -32,6 +32,7 @@ public class OrderSevice {
 	private WebClient webClient;
 	
 	public void saveOrder(OrderRequest orderRequest) {
+
 		Order order  = new Order();
 		order.setOrderNumber(UUID.randomUUID().toString());
 		
@@ -40,12 +41,13 @@ public class OrderSevice {
 		
 		List<String> skuCodes = order.getOrderLineItemsLists().stream().map(OrderLineItems::getSkuCode).toList();
 		
-		InventoryResponse[] inventoryArrayList =  webClient.get().uri("", urlBuilder -> urlBuilder.build("skuCode", skuCodes)).retrieve().bodyToMono(InventoryResponse[].class).block();
-		
-	    boolean allProductsInStock = Arrays.stream(inventoryArrayList).allMatch(InventoryResponse::isInstock);
+//		InventoryResponse[] inventoryArrayList =  webClient.get().uri("http://localhost:53419/api/inventory?", urlBuilder -> urlBuilder.build("skuCode", values)).retrieve().bodyToMono(InventoryResponse[].class).block();
+		InventoryResponse[] inventoryArrayList =  webClient.get().uri("http://localhost:54504/api/inventory", urlBuilder -> urlBuilder.queryParam("skuCode", skuCodes).build()).retrieve().bodyToMono(InventoryResponse[].class).block();
+
+	    boolean allProductsInStock = Arrays.stream(inventoryArrayList).toList().size()>2;
 		if(allProductsInStock) {
 			orderRepo.save(order);
-			log.info("saveOrder method in OrderService is executed");
+			log.info("saveOrder method in OrderService is executed. The order is placed successfully");
 		}else {
 			throw new IllegalArgumentException("Item is not in stock");
 		}
