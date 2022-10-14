@@ -21,7 +21,12 @@ spring:
         uri:
           lb://product-service
         predicates:
-        - Path=/api/product/*
+        - Path=/api/product/
+      - id: order-service
+        uri:
+          lb://order-service
+        predicates:
+        - Path=/api/order/  
       - id: ONLINESHOPPING-GATEWAY-SERVICE
         uri:
           http://localhost:8761

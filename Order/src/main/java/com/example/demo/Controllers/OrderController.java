@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.DTOs.OrderRequest;
 import com.example.demo.Services.OrderSevice;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
 @RestController
 @RequestMapping("/api/order")
 public class OrderController {
@@ -20,8 +22,15 @@ public class OrderController {
 	
 	@PostMapping("/")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void saveOrder(@RequestBody OrderRequest orderRequest) {
+	@CircuitBreaker(name="inventory", fallbackMethod = "saveOrderFallback")
+	public String saveOrder(@RequestBody OrderRequest orderRequest) {
 		orderService.saveOrder(orderRequest);
+	   return "Order placed successfully";
+	}
+	
+	
+	public String saveOrderFallback(OrderRequest orderRequest, Exception e) {
+		return "Ooops! Just Oooops!";
 	}
 
 }

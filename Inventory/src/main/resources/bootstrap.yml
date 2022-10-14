@@ -21,8 +21,8 @@ spring:
       port: 8200
       authentication: TOKEN
       scheme: http
-      token: hvs.BAGfgGzU8y1cGdVRDcxjD4T3
-      application-name:    shopOnline 
+      token:  hvs.uatlCNtONxJvcSNSsBSasIN7
+      application-name: OnlineShopping
   datasource:
     url: jdbc:mysql://localhost:3306/Inventory?createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
