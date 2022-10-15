@@ -31,7 +31,7 @@ public class OrderSevice {
 	@Autowired
 	private WebClient.Builder webClientBuilder;
 	
-	public void saveOrder(OrderRequest orderRequest) {
+	public String saveOrder(OrderRequest orderRequest) {
 
 		Order order  = new Order();
 		order.setOrderNumber(UUID.randomUUID().toString());
@@ -48,6 +48,7 @@ public class OrderSevice {
 		if(allProductsInStock) {
 			orderRepo.save(order);
 			log.info("saveOrder method in OrderService is executed. The order is placed successfully");
+		    return "Order is placed successfully";
 		}else {
 			throw new IllegalArgumentException("Item is not in stock");
 		}
