@@ -27,6 +27,11 @@ spring:
           lb://order-service
         predicates:
         - Path=/api/order/  
+      - id: inventory-service
+        uri:
+          lb://inventory-service
+        predicates:
+        - Path=/api/inventory/ 
       - id: ONLINESHOPPING-GATEWAY-SERVICE
         uri:
           http://localhost:8761
@@ -39,6 +44,11 @@ spring:
           http://localhost:8761
         predicates:
         - Path=/eureka/**
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      probability: 1.0    
          
        
 

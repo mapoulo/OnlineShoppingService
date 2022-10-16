@@ -16,6 +16,11 @@ spring:
       uri: http://localhost:8888
       failFast: true
       name: test_service
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      probability: 1.0     
  
     
   jpa:
