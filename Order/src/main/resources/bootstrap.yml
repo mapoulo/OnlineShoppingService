@@ -3,10 +3,16 @@ server:
 
   
 spring:
-  profiles:
+ kafka:
+    bootstrap-servers: localhost:9092
+    producer.key-serializer: org.apache.kafka.common.serailization.StringSerializer
+    producer.value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    template.default-topic: notificationTopic
+   
+ profiles:
     active:
     - test_service
-  cloud:
+ cloud:
     bus:
       enabled: true
       refresh:
@@ -22,23 +28,23 @@ spring:
       scheme: http
       token: hvs.rsOy6J02NPFjkPHPLgzxZB8v
       application-name: OnlineShopping 
-  datasource:
+ datasource:
     url: jdbc:mysql://localhost:3306/MyOrder?createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
-  zipkin:
+ zipkin:
     base-url: http://localhost:9411
-  sleuth:
+ sleuth:
     sampler:
       probability: 1.0    
-   
+  
     
-  jpa:
+ jpa:
     hibernate:
       ddl-auto: update        
-  application:
+ application:
     name: ORDER-SERVICE
       
-  rabbitmq:
+ rabbitmq:
     host: localhost
     port: 5672
     username: guest

@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -17,6 +18,7 @@ import com.example.demo.DTOs.OrderLineItemsDto;
 import com.example.demo.DTOs.OrderRequest;
 import com.example.demo.Entities.Order;
 import com.example.demo.Entities.OrderLineItems;
+import com.example.demo.Producers.OrderEvent;
 import com.example.demo.Repositories.OrderRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,8 @@ public class OrderSevice {
 	
 	private  final OrderRepository orderRepo;
 	private  final Tracer tracer;
+	
+	private KafkaTemplate<String, OrderEvent> kafkaTemplate;
 	
 	@Autowired
 	private WebClient.Builder webClientBuilder;
@@ -53,6 +57,7 @@ public class OrderSevice {
 		    boolean allProductsInStock = Arrays.stream(inventoryArrayList).toList().size()>2;
 			if(allProductsInStock) {
 				orderRepo.save(order);
+				kafkaTemplate.send("notification", new OrderEvent(order.getOrderNumber()));
 				log.info("saveOrder method in OrderService is executed. The order is placed successfully");
 			    return "Order is placed successfully";
 			}else {
