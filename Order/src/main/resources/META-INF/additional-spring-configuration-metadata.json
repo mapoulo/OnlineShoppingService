@@ -1,5 +1,0 @@
-{"properties": [{
-  "name": "spring.kafka.producer.properties.spring.json.type.mapping",
-  "type": "java.lang.String",
-  "description": "A description for 'spring.kafka.producer.properties.spring.json.type.mapping'"
-}]}

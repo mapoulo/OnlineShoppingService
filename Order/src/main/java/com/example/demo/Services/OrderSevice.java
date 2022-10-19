@@ -48,10 +48,8 @@ public class OrderSevice {
 		
 		List<String> skuCodes = order.getOrderLineItemsLists().stream().map(OrderLineItems::getSkuCode).toList();
 		Span inventoryServiceLookup = tracer.nextSpan().name("inventoryServiceLookup");
-		
 		try(Tracer.SpanInScope spanInScope = tracer.withSpan(inventoryServiceLookup.start())){
 			
-//			InventoryResponse[] inventoryArrayList =  webClient.get().uri("http://localhost:53419/api/inventory?", urlBuilder -> urlBuilder.build("skuCode", values)).retrieve().bodyToMono(InventoryResponse[].class).block();
 			InventoryResponse[] inventoryArrayList =  webClientBuilder.build().get().uri("http://inventory-service/api/inventory", urlBuilder -> urlBuilder.queryParam("skuCode", skuCodes).build()).retrieve().bodyToMono(InventoryResponse[].class).block();
 
 		    boolean allProductsInStock = Arrays.stream(inventoryArrayList).toList().size()>2;
@@ -67,6 +65,8 @@ public class OrderSevice {
 		}finally {
 			inventoryServiceLookup.start();
 		}
+		
+	
 
 		
 	}

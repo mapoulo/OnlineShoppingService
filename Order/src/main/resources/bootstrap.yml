@@ -4,10 +4,16 @@ server:
   
 spring:
  kafka:
-    bootstrap-servers: localhost:9092
-    producer.key-serializer: org.apache.kafka.common.serailization.StringSerializer
-    producer.value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-    template.default-topic: notificationTopic
+    bootstrap-servers:
+    - localhost:9092
+    template:
+      default-topic: notificationTopic
+    producer:
+      key-serializer:
+        org.apache.kafka.common.serialization.StringSerializer
+      value-serializer:
+        org.springframework.kafka.support.serializer.JsonSerializer
+      
    
  profiles:
     active:
@@ -26,7 +32,7 @@ spring:
       port: 8200
       authentication: TOKEN
       scheme: http
-      token: hvs.rsOy6J02NPFjkPHPLgzxZB8v
+      token:  hvs.Cln1AwnLQwkhBl29VV0FHqfH
       application-name: OnlineShopping 
  datasource:
     url: jdbc:mysql://localhost:3306/MyOrder?createDatabaseIfNotExist=true
