@@ -21,7 +21,7 @@ spring:
       port: 8200
       authentication: TOKEN
       scheme: http
-      token:  hvs.Cln1AwnLQwkhBl29VV0FHqfH
+      token: hvs.lsan7nK5xU4j1a43Meag7RB1
       application-name: OnlineShopping
   datasource:
     url: jdbc:mysql://localhost:3306/Inventory?createDatabaseIfNotExist=true

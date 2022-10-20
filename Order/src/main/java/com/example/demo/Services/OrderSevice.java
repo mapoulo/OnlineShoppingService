@@ -39,7 +39,7 @@ public class OrderSevice {
 	private WebClient.Builder webClientBuilder;
 	
 	public String saveOrder(OrderRequest orderRequest) {
-
+        log.info("111111111111111");
 		Order order  = new Order();
 		order.setOrderNumber(UUID.randomUUID().toString());
 		
@@ -48,12 +48,13 @@ public class OrderSevice {
 		
 		List<String> skuCodes = order.getOrderLineItemsLists().stream().map(OrderLineItems::getSkuCode).toList();
 		Span inventoryServiceLookup = tracer.nextSpan().name("inventoryServiceLookup");
+		
 		try(Tracer.SpanInScope spanInScope = tracer.withSpan(inventoryServiceLookup.start())){
 			
 			InventoryResponse[] inventoryArrayList =  webClientBuilder.build().get().uri("http://inventory-service/api/inventory", urlBuilder -> urlBuilder.queryParam("skuCode", skuCodes).build()).retrieve().bodyToMono(InventoryResponse[].class).block();
 
 		    boolean allProductsInStock = Arrays.stream(inventoryArrayList).toList().size()>2;
-			if(allProductsInStock) {
+		    if(allProductsInStock) {
 				orderRepo.save(order);
 				kafkaTemplate.send("notification", new OrderEvent(order.getOrderNumber()));
 				log.info("saveOrder method in OrderService is executed. The order is placed successfully");
@@ -63,6 +64,7 @@ public class OrderSevice {
 			}
 			
 		}finally {
+			log.info("55555555555555");
 			inventoryServiceLookup.start();
 		}
 		
